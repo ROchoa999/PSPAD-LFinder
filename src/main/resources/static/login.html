@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Finder</title>
+    <link rel="icon" href="/images/FinderIcon.png" type="image/png">
+    <style>
+        :root {
+            --primary-color: #1D54FF;
+            --text-color: white;
+            --button-hover: #f0f0f0;
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .login-box {
+            background-color: var(--primary-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+            max-width: 300px;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .login-box input,
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: var(--border-radius);
+            outline: none;
+        }
+
+        .login-box button {
+            background-color: var(--text-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .login-box button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .register {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .register a {
+            color: var(--text-color);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="/images/FinderLogo.png" alt="Logo de la Empresa" width="250">
+    <div class="login-box">
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Usuario" required>
+            <input type="password" name="password" placeholder="Contrasena" required>
+            <button type="submit">Acceder</button>
+        </form>
+        <div class="register">
+            <p>¿No tienes una cuenta? <a href="/signup.html">Regístrate</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

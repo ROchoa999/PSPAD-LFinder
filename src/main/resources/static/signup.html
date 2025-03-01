@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Finder</title>
+    <link rel="icon" href="/images/FinderIcon.png" type="image/png">
+    <style>
+        :root {
+            --primary-color: #1D54FF;
+            --text-color: white;
+            --button-hover: #f0f0f0;
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .register-box {
+            background-color: var(--primary-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+            max-width: 300px;
+            width: 100%;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .register-box h2 {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .register-box input,
+        .register-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: var(--border-radius);
+            outline: none;
+        }
+
+        .register-box button {
+            background-color: var(--text-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .register-box button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .back-to-login {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .back-to-login a {
+            color: var(--text-color);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="/images/FinderLogo.png" alt="Logo de la Empresa" width="250">
+    <div class="register-box">
+        <h2>Regístrate</h2>
+        <form action="/sign-up" method="post" enctype="multipart/form-data">
+            <input type="text" name="user" placeholder="Usuario" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="file" name="imagen" accept="image/jpeg" required>
+            <button type="submit">Registrarse</button>
+        </form>
+        <div class="back-to-login">
+            <p>¿Ya tienes una cuenta? <a href="/login.html">Inicia sesión</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
