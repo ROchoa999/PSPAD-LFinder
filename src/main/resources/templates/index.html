@@ -7,169 +7,45 @@
     <link rel="icon" href="/images/FinderIcon.png" type="image/png">
     <style>
         /* Reset básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         /* Estilos generales */
-        body {
-            background-color: #0073e6;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
+        body { background-color: #0073e6; color: white; display: flex; flex-direction: column; min-height: 100vh; }
         /* HEADER */
-        header {
-            background-color: white;
-            color: #0073e6;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-logo {
-            margin-left: 5%;
-        }
-
-        .header-logo img {
-            height: 50px;
-        }
-
-        .header-title {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        .header-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            margin-right: 5%;
-        }
-
-        #profileButton, #logoutButton {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-        }
-
-        #profileButton img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #0073e6;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        #logoutButton img {
-            width: 40px;
-            height: 40px;
-            border-radius: 0;
-            border: none;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        #profileButton img:hover, #logoutButton img:hover {
-            transform: scale(1.1);
-        }
-
+        header { background-color: white; color: #0073e6; display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .header-logo { margin-left: 5%; }
+        .header-logo img { height: 50px; }
+        .header-title { font-size: 36px; font-weight: bold; text-align: center; flex-grow: 1; }
+        .header-buttons { display: flex; align-items: center; justify-content: center; gap: 30px; margin-right: 5%; }
+        #profileButton, #logoutButton { background: none; border: none; cursor: pointer; padding: 0; }
+        #profileButton img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #0073e6; transition: transform 0.2s ease-in-out; }
+        #logoutButton img { width: 40px; height: 40px; border-radius: 0; border: none; transition: transform 0.2s ease-in-out; }
+        #profileButton img:hover, #logoutButton img:hover { transform: scale(1.1); }
         /* CONTENIDO PRINCIPAL */
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-        }
-
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
         /* RECUADRO CENTRADO CON IMAGEN RESPONSIVA */
         .center-box {
-            width: 600px;
-            height: 400px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            background-color: white;
-            background-image: url('/images/usuario.png'); /* Imagen como fondo */
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+          width: 600px; height: 400px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+          background-color: white; background-size: cover; background-position: center;
+          position: relative;
         }
-
+        /* Franja de texto en la parte inferior del center-box */
+        .text-strip {
+          position: absolute; bottom: 0; width: 100%; background-color: black; color: white;
+          text-align: center; padding: 10px 0; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+        }
         /* Botones fuera del recuadro */
-        .buttons-container {
-            margin-top: 20px;
-            display: flex;
-            gap: 120px;
-        }
-
-        .buttons-container button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-        }
-
-        /* Estilos para los botones de imágenes */
-        .buttons-container button img {
-            width: 70px;  /* Tamaño de las imágenes */
-            height: 70px;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        /* Hover en imágenes */
-        .buttons-container button img:hover {
-            transform: scale(1.2); /* Efecto de zoom */
-        }
-
+        .buttons-container { margin-top: 20px; display: flex; gap: 120px; }
+        .buttons-container button { background: none; border: none; cursor: pointer; padding: 0; }
+        .buttons-container button img { width: 70px; height: 70px; transition: transform 0.2s ease-in-out; }
+        .buttons-container button img:hover { transform: scale(1.2); }
         /* RECUADRO FLOTANTE SIN FONDO */
-        .floating-box {
-            position: fixed;
-            top: 100px;
-            right: 5.5%;
-            display: flex;
-            align-items: center;
-            gap: 30px; /* Espacio entre los botones */
-            background: none; /* Se elimina el fondo blanco */
-            box-shadow: none; /* Se elimina la sombra */
-            padding: 0; /* Se eliminan los paddings */
-        }
-
-        /* Estilos para los botones dentro del floating-box */
-        .floating-box button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-        }
-
-        /* Estilos para las imágenes de los botones */
-        .floating-box button img {
-            width: 50px;  /* Tamaño de las imágenes */
-            height: 50px;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        /* Hover en imágenes */
-        .floating-box button img:hover {
-            transform: scale(1.1); /* Efecto de zoom */
-        }
+        .floating-box { position: fixed; top: 100px; right: 5.5%; display: flex; align-items: center; gap: 30px; background: none; box-shadow: none; padding: 0; }
+        .floating-box button { background: none; border: none; cursor: pointer; padding: 0; }
+        .floating-box button img { width: 50px; height: 50px; transition: transform 0.2s ease-in-out; }
+        .floating-box button img:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
-
 <!-- Header -->
 <header>
     <div class="header-logo">
@@ -189,31 +65,92 @@
         </button>
     </div>
 </header>
-
 <!-- Parte central -->
 <div class="main-content">
-    <div class="center-box"></div> <!-- Recuadro con imagen ajustada -->
-
+    <div class="center-box" id="centerBox">
+        <div class="text-strip" id="textStrip">Texto de prueba</div>
+    </div>
     <!-- Botones debajo del recuadro con imágenes -->
     <div class="buttons-container">
-        <button>
-            <img src="/images/corazon.png" alt="Opción 1">
+        <button onclick="sendAction(true)">
+            <img src="/images/corazon.png" alt="Me gusta">
         </button>
-        <button>
-            <img src="/images/dislike.png" alt="Opción 2">
+        <button onclick="sendAction(false)">
+            <img src="/images/dislike.png" alt="No me gusta">
         </button>
     </div>
 </div>
-
 <!-- Recuadro flotante en la parte superior derecha -->
 <div class="floating-box">
     <button>
-        <img src="/images/corazon.png" alt="Me gusta">
+        <img src="/images/likes-list.png" alt="Listado de likes">
     </button>
     <button>
-        <img src="/images/dislike.png" alt="No me gusta">
+        <img src="/images/email.png" alt="Mensajes directos">
     </button>
 </div>
+<script>
+    let availableUsers = [];
+    let currentIndex = 0;
 
+    // Función para cargar usuarios disponibles desde el backend
+    function loadUsers() {
+      fetch('/api/discovery/available?limit=10')
+        .then(response => response.json())
+        .then(data => {
+          availableUsers = data;
+          currentIndex = 0;
+          if (availableUsers.length > 0) {
+            displayUser();
+          } else {
+            displayNoUsers();
+          }
+        })
+        .catch(error => console.error("Error al cargar usuarios:", error));
+    }
+
+    // Función para mostrar el usuario actual
+    function displayUser() {
+      const user = availableUsers[currentIndex];
+      const centerBox = document.getElementById("centerBox");
+      const textStrip = document.getElementById("textStrip");
+      // Actualizamos la imagen de fondo y el texto con el username
+      centerBox.style.backgroundImage = "url('data:image/jpeg;base64," + user.profilePicture + "')";
+      textStrip.textContent = user.username;
+    }
+
+    // Función para mostrar mensaje cuando no hay usuarios disponibles
+    function displayNoUsers() {
+      const centerBox = document.getElementById("centerBox");
+      // Forzamos fondo blanco y eliminamos la imagen
+      centerBox.style.backgroundImage = "none";
+      centerBox.style.backgroundColor = "white";
+      centerBox.innerHTML = "<div style='display:flex; align-items:center; justify-content:center; height:100%; color:black; font-size:24px;'>No quedan usuarios por ver</div>";
+    }
+
+    // Función para enviar acción y cargar el siguiente usuario
+    function sendAction(isLike) {
+      const user = availableUsers[currentIndex];
+      fetch('/api/discovery/action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetUserId: user.id, isLike: isLike })
+      })
+      .then(response => response.text())
+      .then(() => {
+        currentIndex++;
+        if (currentIndex < availableUsers.length) {
+          displayUser();
+        } else {
+          // Si se han mostrado los 10 usuarios, intentar cargar más
+          loadUsers();
+        }
+      })
+      .catch(error => console.error("Error al enviar la acción:", error));
+    }
+
+    // Cargar usuarios al iniciar la página
+    window.onload = loadUsers;
+</script>
 </body>
 </html>
