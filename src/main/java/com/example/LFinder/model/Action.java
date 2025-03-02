@@ -1,9 +1,7 @@
 package com.example.LFinder.model;
 
 import lombok.Data;
-
 import jakarta.persistence.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,9 +22,8 @@ public class Action {
     private User receiver;
 
     @Column(name = "is_like", nullable = false)
-    private Boolean isLike; // TRUE = like, FALSE = rejection
+    private Boolean liked; // Campo renombrado de isLike a liked
 
     @Column(name = "action_date", nullable = false, updatable = false)
     private LocalDateTime actionDate;
-
 }

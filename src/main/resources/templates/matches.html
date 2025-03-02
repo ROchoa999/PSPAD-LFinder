@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Matches - Finder</title>
+  <link rel="icon" href="/images/FinderIcon.png" type="image/png">
+  <style>
+    body {
+        background-color: #0073e6;
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .user-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+    .user-card {
+        background-color: white;
+        color: black;
+        width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        padding: 10px;
+    }
+    .user-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+    .back-button {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #0073e6;
+        color: white;
+        text-decoration: none;
+        border: 2px solid white;
+        border-radius: 5px;
+    }
+    .back-button:hover {
+        background-color: white;
+        color: #0073e6;
+    }
+  </style>
+</head>
+<body>
+<h1>Listado de Matches</h1>
+<div class="user-list">
+  <div class="user-card" th:each="user : ${matchedUsers}">
+    <img th:src="'data:image/jpeg;base64,' + ${user.profilePicture}" alt="Imagen de perfil">
+    <p th:text="${user.username}">Username</p>
+  </div>
+</div>
+<a href="/index" class="back-button">Volver</a>
+</body>
+</html>
