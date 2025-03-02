@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario</title>
+  <link rel="icon" href="/images/FinderIcon.png" type="image/png">
+  <style>
+    /* Reset básico */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Estilos generales */
+    body {
+        background-color: #0073e6;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        align-items: center;
+    }
+
+    /* HEADER */
+    header {
+        background-color: white;
+        color: #0073e6;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 40px;
+        height: 80px;
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+    }
+
+    .header-logo img {
+        height: 50px;
+    }
+
+    .header-title {
+        font-size: 36px;
+        font-weight: bold;
+        text-align: center;
+        flex-grow: 2;
+    }
+
+    .header-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+    }
+
+    #logoutButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    #logoutButton img {
+        width: 40px;
+        height: 40px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #logoutButton img:hover {
+        transform: scale(1.1);
+    }
+
+    /* Contenedor del perfil */
+    .profile-container {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 500px;
+        height: 550px; /* Se mantiene la altura */
+        margin-top: 50px;
+        color: black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Imagen de perfil */
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #0073e6;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        cursor: pointer; /* Hace que el cursor cambie a "clickable" */
+    }
+
+    /* Efecto al pasar el mouse sobre la imagen de perfil */
+    .profile-img:hover {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    /* Input de archivo oculto */
+    #fileInput {
+        display: none;
+    }
+
+    /* Diseño de dos columnas */
+    .profile-info {
+        margin-top: 20px;
+        font-size: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 15px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .profile-info input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+    }
+
+    .profile-info input[readonly] {
+        background-color: #f0f0f0;
+        cursor: not-allowed;
+    }
+
+    /* Contenedor de botones */
+    .button-container {
+        margin-top: 30px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        background-color: #0073e6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        background-color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header mejor alineado -->
+<header>
+  <div class="header-logo">
+    <img src="/images/FinderLogo.png" alt="Logo">
+  </div>
+  <div class="header-title">
+    Perfil de <span th:text="${user}">Usuario</span>
+  </div>
+  <div class="header-buttons">
+    <button id="logoutButton" onclick="location.href='/logout'">
+      <img src="/images/cerrar-sesion.png" alt="Salir">
+    </button>
+  </div>
+</header>
+
+<!-- Contenedor principal del perfil -->
+<div class="profile-container">
+  <!-- Imagen de perfil clickeable -->
+  <img id="profileImage" th:src="${profilePicture}" alt="Imagen de perfil" class="profile-img">
+
+  <!-- Input oculto para seleccionar la imagen -->
+  <input type="file" id="fileInput" accept="image/*">
+  <input type="hidden" id="profilePictureBase64" name="profilePicture">
+
+  <!-- Diseño de dos columnas -->
+  <div class="profile-info">
+    <label for="username">Usuario:</label>
+    <input type="text" id="username" th:value="${user}" readonly>
+
+    <label for="registrationDate">Fecha de Registro:</label>
+    <input type="text" id="registrationDate" th:value="${registrationDate}" readonly>
+  </div>
+
+  <!-- Contenedor de botones -->
+  <div class="button-container">
+    <button class="btn" onclick="saveProfile()">Guardar cambios</button>
+    <a href="/index" class="btn">Volver</a>
+  </div>
+</div>
+
+<!-- Script para manejar el cambio de imagen y enviar los datos -->
+<script>
+  function saveProfile() {
+      const profilePicture = document.getElementById("profilePictureBase64").value;
+
+      const formData = new FormData();
+      formData.append("profilePicture", profilePicture);
+
+      fetch("/api/user/update-profile", {
+          method: "POST",
+          body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+          if (data.trim() === "") {
+              // Si la respuesta está vacía, solo recargar la página
+              window.location.reload();
+          } else {
+              alert(data); // Mostrar mensaje solo si hay contenido
+              if (data.includes("correctamente")) {
+                  window.location.reload();
+              }
+          }
+      })
+      .catch(error => console.error("Error al actualizar el perfil:", error));
+  }
+
+  document.getElementById("profileImage").addEventListener("click", function() {
+      document.getElementById("fileInput").click();
+  });
+
+  document.getElementById("fileInput").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              document.getElementById("profileImage").src = e.target.result;
+              document.getElementById("profilePictureBase64").value = e.target.result.split(",")[1];
+          };
+          reader.readAsDataURL(file);
+      }
+  });
+</script>
+
+
+</body>
+</html>

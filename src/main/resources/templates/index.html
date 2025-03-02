@@ -134,28 +134,38 @@
             transform: scale(1.2); /* Efecto de zoom */
         }
 
-        /* RECUADRO FLOTANTE */
+        /* RECUADRO FLOTANTE SIN FONDO */
         .floating-box {
             position: fixed;
             top: 100px;
-            right: 4%;
-            background-color: white;
-            color: #0073e6;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            font-size: 14px;
+            right: 5.5%;
+            display: flex;
+            align-items: center;
+            gap: 30px; /* Espacio entre los botones */
+            background: none; /* Se elimina el fondo blanco */
+            box-shadow: none; /* Se elimina la sombra */
+            padding: 0; /* Se eliminan los paddings */
         }
 
-        /* FOOTER */
-        footer {
-            background-color: white;
-            color: #0073e6;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: auto;
+        /* Estilos para los botones dentro del floating-box */
+        .floating-box button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
         }
 
+        /* Estilos para las imágenes de los botones */
+        .floating-box button img {
+            width: 50px;  /* Tamaño de las imágenes */
+            height: 50px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Hover en imágenes */
+        .floating-box button img:hover {
+            transform: scale(1.1); /* Efecto de zoom */
+        }
     </style>
 </head>
 <body>
@@ -169,9 +179,11 @@
         Bienvenido <span th:text="${user}">Usuario</span>
     </div>
     <div class="header-buttons">
-        <button id="profileButton">
-            <img src="/images/usuario.png" alt="Perfil" class="profile-img">
-        </button>
+        <a href="/profile">
+            <button id="profileButton">
+                <img th:src="${profilePicture}" alt="Perfil" class="profile-img">
+            </button>
+        </a>
         <button id="logoutButton" onclick="location.href='/logout'">
             <img src="/images/cerrar-sesion.png" alt="Salir" class="logout-img">
         </button>
@@ -195,12 +207,13 @@
 
 <!-- Recuadro flotante en la parte superior derecha -->
 <div class="floating-box">
-    <p>Este es el recuadro flotante</p>
+    <button>
+        <img src="/images/corazon.png" alt="Me gusta">
+    </button>
+    <button>
+        <img src="/images/dislike.png" alt="No me gusta">
+    </button>
 </div>
-
-<!-- Footer -->
-<footer>
-</footer>
 
 </body>
 </html>

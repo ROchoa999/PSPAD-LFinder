@@ -38,10 +38,38 @@ public class HomeController {
         return "redirect:/signup.html";
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            model.addAttribute("user", username);
+            model.addAttribute("profilePicture", "data:image/jpeg;base64," + user.getProfilePicture());
+            model.addAttribute("password", "••••••••"); // No mostramos la contraseña real
+            model.addAttribute("registrationDate", user.getRegistrationDate());
+        } else {
+            model.addAttribute("user", "Desconocido");
+            model.addAttribute("profilePicture", "/images/usuario.png");
+            model.addAttribute("password", "••••••••");
+            model.addAttribute("registrationDate", "No disponible");
+        }
+        return "profile"; // Renderiza profile.html
+    }
+
+
     @GetMapping("/index")
     public String index(Model model, Authentication authentication) {
         String username = authentication.getName();
-        model.addAttribute("user", username);
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        if (userOpt.isPresent()) {
+            model.addAttribute("user", username);
+            model.addAttribute("profilePicture", "data:image/jpeg;base64," + userOpt.get().getProfilePicture());
+        } else {
+            model.addAttribute("profilePicture", "/images/usuario.png"); // Imagen por defecto
+        }
         return "index";
     }
 
