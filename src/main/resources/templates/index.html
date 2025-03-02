@@ -85,7 +85,7 @@
     <button onclick="location.href='/matches'">
         <img src="/images/match.png" alt="Listado de matches">
     </button>
-    <button>
+    <button onclick="location.href='/md'">
         <img src="/images/email.png" alt="Mensajes directos">
     </button>
 </div>
@@ -122,13 +122,12 @@
     // Función para mostrar mensaje cuando no hay usuarios disponibles
     function displayNoUsers() {
       const centerBox = document.getElementById("centerBox");
-      // Forzamos fondo blanco y eliminamos la imagen
       centerBox.style.backgroundImage = "none";
       centerBox.style.backgroundColor = "white";
       centerBox.innerHTML = "<div style='display:flex; align-items:center; justify-content:center; height:100%; color:black; font-size:24px;'>No quedan usuarios por ver</div>";
     }
 
-    // Función para enviar acción y cargar el siguiente usuario
+    // Función para enviar acción y manejar la respuesta
     function sendAction(isLike) {
       const user = availableUsers[currentIndex];
       fetch('/api/discovery/action', {
@@ -136,15 +135,17 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targetUserId: user.id, isLike: isLike })
       })
-      .then(response => response.text())
-      .then(() => {
-        currentIndex++;
-        if (currentIndex < availableUsers.length) {
-          displayUser();
-        } else {
-          // Si se han mostrado los 10 usuarios, intentar cargar más
-          loadUsers();
-        }
+      .then(response => response.json())
+      .then(data => {
+         if(data.match) {
+            alert("Has hecho un match con " + data.matchedUsername);
+         }
+         currentIndex++;
+         if (currentIndex < availableUsers.length) {
+            displayUser();
+         } else {
+            loadUsers();
+         }
       })
       .catch(error => console.error("Error al enviar la acción:", error));
     }

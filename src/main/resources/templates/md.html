@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Listado de Matches - Finder</title>
+  <title>Mensajes Directos - Finder</title>
   <link rel="icon" href="/images/FinderIcon.png" type="image/png">
   <style>
     body {
@@ -12,27 +12,40 @@
         margin: 0;
         padding: 20px;
     }
-    h1 {
-        text-align: center;
-        margin-bottom: 30px;
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        color: #0073e6;
+        padding: 10px 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .user-list {
+    .header-logo img {
+        height: 50px;
+    }
+    .header-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .conversation-list {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
+        margin-top: 20px;
     }
-    .user-card {
+    .conversation-card {
         background-color: white;
         color: black;
         width: 200px;
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         text-align: center;
         padding: 10px;
         text-decoration: none;
     }
-    .user-card img {
+    .conversation-card img {
         width: 100%;
         height: auto;
         border-radius: 50%;
@@ -56,13 +69,24 @@
   </style>
 </head>
 <body>
-<h1>Listado de Matches</h1>
-<div class="user-list">
-  <a th:each="user : ${matchedUsers}"
-     th:href="@{/conversation(userId=${user.id})}"
-     class="user-card">
-    <img th:src="'data:image/jpeg;base64,' + ${user.profilePicture}" alt="Imagen de perfil">
-    <p th:text="${user.username}">Username</p>
+<header>
+  <div class="header-logo">
+    <img src="/images/FinderLogo.png" alt="Logo">
+  </div>
+  <div class="header-title">
+    Mensajes Directos
+  </div>
+  <div>
+    <!-- Enlace para volver a la página principal -->
+    <a href="/index" style="text-decoration:none; color:#0073e6;">Inicio</a>
+  </div>
+</header>
+<div class="conversation-list">
+  <a th:each="partner : ${conversationPartners}"
+     th:href="@{/conversation(userId=${partner.idUser})}"
+     class="conversation-card">
+    <img th:src="'data:image/jpeg;base64,' + ${partner.profilePicture}" alt="Imagen de perfil">
+    <p th:text="${partner.username}">Username</p>
   </a>
 </div>
 <a href="/index" class="back-button">Volver</a>
