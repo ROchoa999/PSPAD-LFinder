@@ -26,6 +26,9 @@ public class Match {
     private LocalDateTime matchDate;
 
     @Column(nullable = false)
-    private Boolean notified;
+    private Boolean notifiedUser1;
+
+    @Column(nullable = false)
+    private Boolean notifiedUser2;
 
 }

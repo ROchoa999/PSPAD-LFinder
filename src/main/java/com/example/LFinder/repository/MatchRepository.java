@@ -16,4 +16,8 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
     @Query("SELECT m FROM Match m WHERE (m.user1.idUser = :userId1 AND m.user2.idUser = :userId2) " +
             "OR (m.user1.idUser = :userId2 AND m.user2.idUser = :userId1)")
     Optional<Match> findMatchByUsers(@Param("userId1") Integer userId1, @Param("userId2") Integer userId2);
+
+    @Query("SELECT m FROM Match m WHERE (m.user1.idUser = :userId AND m.notifiedUser1 = false) " +
+            "OR (m.user2.idUser = :userId AND m.notifiedUser2 = false)")
+    List<Match> findPendingMatchesForUser(@Param("userId") Integer userId);
 }
