@@ -1,8 +1,8 @@
 package com.example.LFinder.controller;
 
 import com.example.LFinder.model.User;
-import com.example.LFinder.repository.MessageRepository;
 import com.example.LFinder.repository.UserRepository;
+import com.example.LFinder.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import java.util.List;
 public class MessageController {
 
     @Autowired
-    private MessageRepository messageRepository;
+    private MessageService messageService;
 
     @Autowired
     private UserRepository userRepository;
@@ -25,9 +25,9 @@ public class MessageController {
         String username = authentication.getName();
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        // Obtenemos la lista de usuarios con los que se ha tenido conversación
-        List<User> conversationPartners = messageRepository.findConversationPartners(currentUser.getIdUser());
+        List<User> conversationPartners = messageService.getConversationPartners(currentUser.getIdUser());
         model.addAttribute("conversationPartners", conversationPartners);
         return "md"; // Renderiza el template md.html
     }
 }
+

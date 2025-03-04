@@ -2,6 +2,7 @@ package com.example.LFinder.controller;
 
 import com.example.LFinder.model.User;
 import com.example.LFinder.repository.UserRepository;
+import com.example.LFinder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,9 @@ public class HomeController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
     public String home() {
         return "redirect:/login.html";
@@ -42,12 +46,11 @@ public class HomeController {
     public String profile(Model model, Authentication authentication) {
         String username = authentication.getName();
         Optional<User> userOpt = userRepository.findByUsername(username);
-
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             model.addAttribute("user", username);
             model.addAttribute("profilePicture", "data:image/jpeg;base64," + user.getProfilePicture());
-            model.addAttribute("password", "••••••••"); // No mostramos la contraseña real
+            model.addAttribute("password", "••••••••"); // Se muestra la contraseña enmascarada
             model.addAttribute("registrationDate", user.getRegistrationDate());
         } else {
             model.addAttribute("user", "Desconocido");
@@ -55,20 +58,18 @@ public class HomeController {
             model.addAttribute("password", "••••••••");
             model.addAttribute("registrationDate", "No disponible");
         }
-        return "profile"; // Renderiza profile.html
+        return "profile";
     }
-
 
     @GetMapping("/index")
     public String index(Model model, Authentication authentication) {
         String username = authentication.getName();
         Optional<User> userOpt = userRepository.findByUsername(username);
-
         if (userOpt.isPresent()) {
             model.addAttribute("user", username);
             model.addAttribute("profilePicture", "data:image/jpeg;base64," + userOpt.get().getProfilePicture());
         } else {
-            model.addAttribute("profilePicture", "/images/usuario.png"); // Imagen por defecto
+            model.addAttribute("profilePicture", "/images/usuario.png");
         }
         return "index";
     }
@@ -79,29 +80,12 @@ public class HomeController {
                                 @RequestParam("imagen") MultipartFile imagen,
                                 RedirectAttributes redirectAttributes) {
         try {
-            // Convertir imagen a Base64
-            String imagenBase64 = Base64.getEncoder().encodeToString(imagen.getBytes());
-
-            // Crear y configurar el nuevo usuario
-            User newUser = new User();
-            newUser.setUsername(user);
-            newUser.setPassword(passwordEncoder.encode(password)); // Contraseña cifrada
-            newUser.setProfilePicture(imagenBase64);
-            newUser.setRegistrationDate(LocalDateTime.now());
-
-            // Guardar el usuario en la base de datos
-            userRepository.save(newUser);
-
-            // Mensaje de éxito para mostrar en login (opcional)
+            userService.registerUserWithImage(user, password, imagen);
             redirectAttributes.addFlashAttribute("successMessage", "Registro exitoso. Inicia sesión.");
-
         } catch (IOException e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Error al registrar usuario.");
         }
-
-        // Redirigir al usuario a la página de login después del registro
         return "redirect:/";
     }
-
 }
