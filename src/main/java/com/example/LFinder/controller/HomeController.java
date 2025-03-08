@@ -50,12 +50,10 @@ public class HomeController {
             User user = userOpt.get();
             model.addAttribute("user", username);
             model.addAttribute("profilePicture", "data:image/jpeg;base64," + user.getProfilePicture());
-            model.addAttribute("password", "••••••••"); // Se muestra la contraseña enmascarada
             model.addAttribute("registrationDate", user.getRegistrationDate());
         } else {
             model.addAttribute("user", "Desconocido");
             model.addAttribute("profilePicture", "/images/usuario.png");
-            model.addAttribute("password", "••••••••");
             model.addAttribute("registrationDate", "No disponible");
         }
         return "profile";

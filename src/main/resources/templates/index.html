@@ -138,14 +138,10 @@
       .then(response => response.json())
       .then(data => {
          if(data.match) {
-            alert("Has hecho un match con " + data.matchedUsername);
+            alert(data.message);
          }
-         currentIndex++;
-         if (currentIndex < availableUsers.length) {
-            displayUser();
-         } else {
-            loadUsers();
-         }
+         // En lugar de incrementar el índice, recargamos la lista de usuarios
+         loadUsers();
       })
       .catch(error => console.error("Error al enviar la acción:", error));
     }

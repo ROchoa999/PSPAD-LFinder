@@ -21,7 +21,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     @Query("SELECT m.sender FROM Message m WHERE m.receiver.idUser = :userId")
     List<User> findSendersByReceiver(@Param("userId") Integer userId);
 
-    // Método por defecto para combinar ambas listas sin duplicados
+    // Metodo por defecto para combinar ambas listas sin duplicados
     default List<User> findConversationPartners(@Param("userId") Integer userId) {
         List<User> receivers = findReceiversBySender(userId);
         List<User> senders = findSendersByReceiver(userId);

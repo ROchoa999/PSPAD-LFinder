@@ -46,7 +46,12 @@ public class DiscoveryService {
         action.setActionDate(LocalDateTime.now());
         actionRepository.save(action);
 
-        ActionResponse response = new ActionResponse("Acción registrada", false, null);
+        // Usamos un StringBuilder para acumular los mensajes
+        StringBuilder messageBuilder = new StringBuilder();
+        boolean isMatch = false;
+        String immediateMatchUsername = null;
+
+        // Primero se evalúa el match inmediato si es un like
         if (actionRequest.getIsLike()) {
             Optional<Action> reverseAction = actionRepository.findBySenderAndReceiverAndLiked(receiver, sender, true);
             if (reverseAction.isPresent()) {
@@ -57,12 +62,20 @@ public class DiscoveryService {
                 match.setNotifiedUser1(true);
                 match.setNotifiedUser2(false);
                 matchRepository.save(match);
-                response = new ActionResponse("Has hecho match con " + receiver.getUsername(), true, receiver.getUsername());
+                messageBuilder.append("Has hecho match con ").append(receiver.getUsername());
+                isMatch = true;
+                immediateMatchUsername = receiver.getUsername();
             }
         }
+
+        // Luego se evalúan los matches pendientes
         List<Match> pendingMatches = matchRepository.findPendingMatchesForUser(sender.getIdUser());
         if (!pendingMatches.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Matches anteriores:\n");
+            // Si ya hay un mensaje (match inmediato), se agrega un salto de línea
+            if (!messageBuilder.isEmpty()) {
+                messageBuilder.append("\n\n");
+            }
+            messageBuilder.append("Matches anteriores:\n");
             for (Match pendingMatch : pendingMatches) {
                 String matchedUsername;
                 if (pendingMatch.getUser1().getIdUser().equals(sender.getIdUser())) {
@@ -72,13 +85,15 @@ public class DiscoveryService {
                     matchedUsername = pendingMatch.getUser1().getUsername();
                     pendingMatch.setNotifiedUser2(true);
                 }
-                sb.append(matchedUsername).append("\n");
+                messageBuilder.append(matchedUsername).append("\n");
                 matchRepository.save(pendingMatch);
             }
-            response.setMessage(sb.toString());
-            response.setMatch(true);
+            isMatch = true;
         }
-        return response;
+
+        String finalMessage = messageBuilder.length() > 0 ? messageBuilder.toString() : "Acción registrada";
+        return new ActionResponse(finalMessage, isMatch, immediateMatchUsername);
     }
+
 }
 
