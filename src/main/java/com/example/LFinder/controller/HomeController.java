@@ -8,16 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.Optional;
 
 @Controller
@@ -75,15 +71,21 @@ public class HomeController {
     @PostMapping("/sign-up")
     public String processSignUp(@RequestParam String user,
                                 @RequestParam String password,
-                                @RequestParam("imagen") MultipartFile imagen,
-                                RedirectAttributes redirectAttributes) {
+                                @RequestParam("imagen") MultipartFile imagen) {
         try {
-            userService.registerUserWithImage(user, password, imagen);
-            redirectAttributes.addFlashAttribute("successMessage", "Registro exitoso. Inicia sesión.");
+            Optional<User> registeredUser = userService.registerUserWithImage(user, password, imagen);
+            if (registeredUser.isPresent()) {
+                // Registro exitoso: redirige a la página de login
+                return "redirect:/login.html";
+            } else {
+                // El usuario ya existe: redirige a la página de registro con parámetro de error
+                return "redirect:/signup.html?error=true";
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Error al registrar usuario.");
+            // En caso de error de IO, se redirige con error
+            return "redirect:/signup.html?error=true";
         }
-        return "redirect:/";
     }
+
 }

@@ -36,9 +36,10 @@ public class UserService implements UserDetailsService {
     }
 
     // Registro usado en HomeController (con imagen y fecha de registro)
-    public User registerUserWithImage(String username, String rawPassword, MultipartFile imagen) throws IOException {
+    public Optional<User> registerUserWithImage(String username, String rawPassword, MultipartFile imagen) throws IOException {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("El usuario ya existe, colega.");
+            // El usuario ya existe: se retorna un Optional vacío
+            return Optional.empty();
         }
         User user = new User();
         user.setUsername(username);
@@ -46,7 +47,7 @@ public class UserService implements UserDetailsService {
         String imagenBase64 = Base64.getEncoder().encodeToString(imagen.getBytes());
         user.setProfilePicture(imagenBase64);
         user.setRegistrationDate(LocalDateTime.now());
-        return userRepository.save(user);
+        return Optional.of(userRepository.save(user));
     }
 
     // Obtener imagen de perfil para UserController

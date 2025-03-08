@@ -35,6 +35,8 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         // Si el login es exitoso, redirige a bienvenido.html
                         .defaultSuccessUrl("/index", true)
+                        // Redirige con ?error=true si falla el login
+                        .failureUrl("/login.html?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

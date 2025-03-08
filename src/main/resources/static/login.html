@@ -74,6 +74,16 @@
             color: var(--text-color);
             text-decoration: underline;
         }
+
+        /* Estilo para el mensaje de error con fondo rojo y letras blancas */
+        .error-message {
+            margin-top: 10px;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: var(--border-radius);
+        }
     </style>
 </head>
 <body>
@@ -90,5 +100,21 @@
         </div>
     </div>
 </div>
+<!-- Script para mostrar el mensaje de error si existe el parámetro error -->
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error')) {
+            // Crear el elemento del mensaje de error
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = 'Login inválido';
+            // Insertarlo en la caja de login, antes del div de registro
+            const loginBox = document.querySelector('.login-box');
+            const registerDiv = loginBox.querySelector('.register');
+            loginBox.insertBefore(errorDiv, registerDiv);
+        }
+    });
+</script>
 </body>
 </html>
